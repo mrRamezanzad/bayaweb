@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {register} = require('../services/authentication')
+const {create} = require('../services/user')
+const {dbConnection} = require('../utils/db')
 
 
 /* GET home page. */
@@ -13,11 +14,14 @@ router.get('/register', function (req, res) {
   res.render('register')
 })
 
-
 // handling registration proccess 
 router.post('/register', async ({body}, res) => {
   const userInfo = body
-  res.send(await register(userInfo))
+  try {
+    const newUser = await create(userInfo)
+    res.status(201).send(newUser)
+
+  } catch (err) {res.status(500).send(err)}
 
 })
 

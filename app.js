@@ -9,15 +9,6 @@ const usersRouter = require('./routes/users');
 
 const app = express();
 
-const {connect} = require('mongoose')
-const dbConnection = connect('mongodb+srv://keystar:X3Z4hCYqkzEMzr@cluster0.xfczv.mongodb.net/bayaweb?retryWrites=true&w=majority',
- {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  // useCreateIndex: true,
- }
-).then(console.log('[+] successfully connected to DB')
-).catch((err) => console.log('[+] DB connection failed!!!', `\n ${err}`))
 
 
 // view engine setup
