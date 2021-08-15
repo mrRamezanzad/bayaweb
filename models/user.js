@@ -4,7 +4,8 @@ const userSchema = new Schema({
         username: String,
         password: String,
         firstName: {type: String},
-        access: {type: Number, enum:[1,2,3,4], default: 1}
+        access: {type: [String], enum:["add", "edit", "delete"]},
+        token: String,
         
 })
 

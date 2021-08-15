@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userModell = require('../models/user')
 const userService = require('../services/user')
+const {isPermittedToAdd, isPermittedToEdit, isPermittedToDelete} = require('../middlewares/permissions')
 
 router.get('/', async (req, res, next) => {
 
@@ -17,13 +18,13 @@ router.get('/:id', async (req, res, next) => {
   let userId = req.params.id
   let user 
   try {
-    user = await userService.findOne(userId)
+    user = await userService.findOne({_id: userId})
     res.send(user)
 
   } catch (err) {res.status(500).send(err)}
 });
 
-router.patch('/:id',async (req, res, next) => {
+router.patch('/:id', isPermittedToEdit, async (req, res, next) => {
   let userId = req.params.id
   let updateUserInfo = req.body
   try {
@@ -34,7 +35,7 @@ router.patch('/:id',async (req, res, next) => {
 
 });
 
-router.delete('/:id',async (req, res, next) => {
+router.delete('/:id', isPermittedToDelete, async (req, res, next) => {
   let userId = req.params.id
   let isUserDeleted
   try {

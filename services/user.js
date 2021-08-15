@@ -19,10 +19,10 @@ exports.findAll = () => {
     })
 }
 
-exports.findOne = async (userId) => {
+exports.findOne = async (match) => {
     return new Promise (async (resolve, reject) => {
         try {
-            const user = await userModel.findOne({_id: userId})
+            const user = await userModel.findOne(match)
             resolve(user)
 
         } catch (err) {reject(err)}

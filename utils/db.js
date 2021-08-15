@@ -22,8 +22,14 @@ async function checkAdminExistance() {
 
 async function createAdmin() {
     try {
-        const admin = await create({username: "admin", password: "admin", firstName: "root", access: 4})
-        console.log(`i created Admin: ${admin}`)
+        const admin = await create({
+                username: "admin",
+                password: "admin",
+                firstName: "root",
+                access: ['add', 'edit', 'delete']
+        })
+
+        console.log(`Admin Created: ${admin}`)
     } catch(err) {return err}
 }
 
