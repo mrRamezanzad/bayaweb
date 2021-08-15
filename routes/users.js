@@ -1,9 +1,47 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const userModell = require('../models/user')
+const userService = require('../services/user')
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+router.get('/', async (req, res, next) => {
+
+  let users 
+  try {
+    users = await userService.findAll()
+    res.send(users)
+
+  } catch (err) {res.status(500).send(users)}
 });
+
+router.get('/:id', async (req, res, next) => {
+  let userId = req.params.id
+  let user 
+  try {
+    user = await userService.findOne(userId)
+    res.send(user)
+
+  } catch (err) {res.status(500).send(err)}
+});
+
+router.patch('/:id',async (req, res, next) => {
+  let userId = req.params.id
+  let updateUserInfo = req.body
+  try {
+    updatedUser = await userService.update(userId, updateUserInfo)
+    res.send({updated: updatedUser})
+    
+  } catch (err) {res.status(500).send(err)}
+
+});
+
+router.delete('/:id',async (req, res, next) => {
+  let userId = req.params.id
+  let isUserDeleted
+  try {
+    isUserDeleted = await userService.delete(userId)
+    res.send({deleted: updatedUser})
+    
+  } catch (err){res.status(500).send(err)}
+})
 
 module.exports = router;
