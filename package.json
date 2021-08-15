@@ -1,0 +1,34 @@
+{
+  "name": "panel",
+  "version": "0.0.0",
+  "author": "mrRamezanzad",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "mongoose": "^5.13.7",
+    "morgan": "~1.9.1"
+  },
+  "description": "> note: to replace database query in `app.js`",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrRamezanzad/bayaweb.git"
+  },
+  "keywords": [
+    "authorization",
+    "bayaweb"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrRamezanzad/bayaweb/issues"
+  },
+  "homepage": "https://github.com/mrRamezanzad/bayaweb#readme"
+}
