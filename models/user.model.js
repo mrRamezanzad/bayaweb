@@ -3,16 +3,25 @@ const {Schema, model}  = require('mongoose')
 const userSchema = new Schema({
         username: {
           type: String,
-          // minLength: 5,
+          required: true,
+          trim: true,
+          unique: true,
+          minLength: 5,
+          maxLength: 25
         },
 
         password: {
           type: String,
-          // minLength: 5,
+          required: true,
+          trim: true,
+          minLength: 5,
+          maxLength: 25
           
         },
         email: {
           type: String,
+          trim: true,
+          unique: true,
           validate: {
             validator: (value) => {
               const emailPattern = /^.{4,}@(gmail|yahoo)\.(com|net|io)$/
@@ -25,6 +34,8 @@ const userSchema = new Schema({
 
         mobile: {
           type: String,
+          trim: true,
+          unique: true,
           validate: {
             validator: (value) => {
               iranianMobilePattern = /^(\+98|0)?9\d{9}$/

@@ -9,7 +9,7 @@ const dbConnection = connect(DB_ADDRESS,
                 {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
-                    // useCreateIndex: true,
+                    useCreateIndex: true,
                 })
     .then(console.log('[+] successfully connected to DB'))
     .catch((err) => console.log('[+] DB connection failed!!!', `\n ${err}`)
