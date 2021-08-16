@@ -1,20 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const {create} = require('../services/users.service')
+
 const {login} = require("../services/auth.service");
-const { isPermittedToAdd, isLoggedIn } = require('../middlewares/permissions');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router
+
+.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
-});
+})
 
 // registeration's view rendering
-router.get('/register', function (req, res) {
+.get('/register', function (req, res) {
   res.render('register')
 })
 
-router.post('/auth/login', async (req, res, next) => {
+.post('/auth/login', async (req, res, next) => {
   try{
     const {username, password} = req.body
     const loginResult = await login(username, password)

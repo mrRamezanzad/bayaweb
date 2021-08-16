@@ -1,59 +1,71 @@
 const express = require('express');
 const router = express.Router();
 
-const userModel = require('../models/user.model')
-const userService = require('../services/users.service')
+const usersService = require('../services/users.service')
 
 const {isLoggedIn, isPermittedToAdd, isPermittedToEdit, isPermittedToDelete} = require('../middlewares/permissions')
 const usersValidation = require('../validations/users.validation.js')
+const {parseArray} = require('../utils/general.util')
 
-router.post('/', isLoggedIn, isPermittedToAdd, usersValidation.create, async ({body}, res) => {
-  const userInfo = body
-  if(userInfo['access']) userInfo.access = JSON.parse(userInfo.access)
+router
+
+.post('/', isLoggedIn, isPermittedToAdd, usersValidation.create, async (req, res, next) => {
+  
+  const userInfo = {
+    username: req.body.username,
+    password: req.body.password,
+    email: req.body.email,
+    mobile: req.body.mobile,
+    ...(req.body['access']) && {access: parseArray(req.body.access)}
+  }
   try {
-    const newUser = await create(userInfo)
+    const newUser = await usersService.create(userInfo)
     res.status(201).send(newUser)
 
   } catch (err) {res.status(500).send(err)}
 })
 
-router.get('/', async (req, res, next) => {
 
+.get('/', async (req, res, next) => {
+  
   let users 
   try {
-    users = await userService.findAll()
+    users = await usersService.findAll()
     res.send(users)
 
   } catch (err) {res.status(500).send(users)}
-});
+})
 
-router.get('/:id', async (req, res, next) => {
+.get('/:id', async (req, res, next) => {
+  
   let userId = req.params.id
   let user 
   try {
-    user = await userService.findOne({_id: userId})
+    user = await usersService.findOne({_id: userId})
     res.send(user)
 
   } catch (err) {res.status(500).send(err)}
-});
+})
 
-router.patch('/:id', isPermittedToEdit, async (req, res, next) => {
+.patch('/:id', isPermittedToEdit, async (req, res, next) => {
+  
   let userId = req.params.id
   let updateUserInfo = req.body
   if(updateUserInfo['access']) updateUserInfo.access = JSON.parse(updateUserInfo.access)
   try {
-    updatedUser = await userService.update(userId, updateUserInfo)
+    updatedUser = await usersService.update(userId, updateUserInfo)
     res.send({updated: updatedUser})
     
   } catch (err) {res.status(500).send(err)}
 
-});
+})
 
-router.delete('/:id', isPermittedToDelete, async (req, res, next) => {
+.delete('/:id', isPermittedToDelete, async (req, res, next) => {
+
   let userId = req.params.id
   let isUserDeleted
   try {
-    isUserDeleted = await userService.delete(userId)
+    isUserDeleted = await usersService.delete(userId)
     res.send({deleted: isUserDeleted})
     
   } catch (err){res.status(500).send(err)}
