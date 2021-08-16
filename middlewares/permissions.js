@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const {findOne} = require('../services/user')
+const {findOne} = require('../services/users.service')
 const JWT_SECRET = 'SECRET'
 
 exports.isLoggedIn = async (req, res, next) => {

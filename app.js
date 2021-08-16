@@ -1,15 +1,15 @@
-const createError = require('http-errors');
-const express = require('express');
 const path = require('path');
+const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const {dbConnection} = require('./utils/db')
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const { isLoggedIn } = require('./middlewares/permissions');
 
+const express = require('express');
 const app = express();
+const logger = require('morgan');
+const validator = require('express-validator')
 
+const {dbConnection} = require('./utils/db.util')
+const { isLoggedIn } = require('./middlewares/permissions');
+const routes = require('./routes/api');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -17,12 +17,11 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', isLoggedIn, usersRouter);
+app.use(routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

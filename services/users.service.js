@@ -1,4 +1,4 @@
-const userModel = require('../models/user')
+const userModel = require('../models/user.model')
 
 exports.create = async (userInfo) => {
     return new Promise(async (resolve, reject) => {

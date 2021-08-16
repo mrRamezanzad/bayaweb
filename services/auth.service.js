@@ -1,5 +1,5 @@
-const {findOne} = require('./user')
-const setToken = require('../utils/auth')
+const {findOne} = require('./users.service')
+const setToken = require('../utils/auth.util')
 
 function verifyPassword(password) {
     return true

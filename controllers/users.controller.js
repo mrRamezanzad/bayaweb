@@ -1,8 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const userModell = require('../models/user')
-const userService = require('../services/user')
-const {isPermittedToAdd, isPermittedToEdit, isPermittedToDelete} = require('../middlewares/permissions')
+
+const userModel = require('../models/user.model')
+const userService = require('../services/users.service')
+
+const {isLoggedIn, isPermittedToAdd, isPermittedToEdit, isPermittedToDelete} = require('../middlewares/permissions')
+const usersValidation = require('../validations/users.validation.js')
+
+router.post('/', isLoggedIn, isPermittedToAdd, usersValidation.create, async ({body}, res) => {
+  const userInfo = body
+  if(userInfo['access']) userInfo.access = JSON.parse(userInfo.access)
+  try {
+    const newUser = await create(userInfo)
+    res.status(201).send(newUser)
+
+  } catch (err) {res.status(500).send(err)}
+})
 
 router.get('/', async (req, res, next) => {
 
@@ -41,7 +54,7 @@ router.delete('/:id', isPermittedToDelete, async (req, res, next) => {
   let isUserDeleted
   try {
     isUserDeleted = await userService.delete(userId)
-    res.send({deleted: updatedUser})
+    res.send({deleted: isUserDeleted})
     
   } catch (err){res.status(500).send(err)}
 })

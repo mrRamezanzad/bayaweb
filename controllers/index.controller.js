@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {create} = require('../services/user')
-const {login} = require("../services/auth");
+const {create} = require('../services/users.service')
+const {login} = require("../services/auth.service");
 const { isPermittedToAdd, isLoggedIn } = require('../middlewares/permissions');
 
 /* GET home page. */
@@ -12,18 +12,6 @@ router.get('/', function(req, res, next) {
 // registeration's view rendering
 router.get('/register', function (req, res) {
   res.render('register')
-})
-
-// handling registration proccess 
-router.post('/register', isLoggedIn, isPermittedToAdd, async ({body}, res) => {
-  const userInfo = body
-  userInfo.access = JSON.parse(userInfo.access)
-  try {
-    const newUser = await create(userInfo)
-    res.status(201).send(newUser)
-
-  } catch (err) {res.status(500).send(err)}
-
 })
 
 router.post('/auth/login', async (req, res, next) => {
