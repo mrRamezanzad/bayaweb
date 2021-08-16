@@ -27,6 +27,7 @@ router.get('/:id', async (req, res, next) => {
 router.patch('/:id', isPermittedToEdit, async (req, res, next) => {
   let userId = req.params.id
   let updateUserInfo = req.body
+  if(updateUserInfo['access']) updateUserInfo.access = JSON.parse(updateUserInfo.access)
   try {
     updatedUser = await userService.update(userId, updateUserInfo)
     res.send({updated: updatedUser})

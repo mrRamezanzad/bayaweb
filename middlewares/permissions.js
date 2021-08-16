@@ -10,23 +10,26 @@ exports.isLoggedIn = async (req, res, next) => {
         const userId = decodedToken.id
         const user = await findOne({_id: userId, token})
         if(!user) throw new Error('credentials required')
-        next()
         res.locals.user = user
+        next()
 
     } catch (err){next(err)}
 }
 
-exports.isPermittedToAdd = async () => {
-    if(res.locals.user.access.indexOf('add') === -1) next(new Error("you are not permitted to add"))
-    next()
+exports.isPermittedToAdd = async (req, res, next) => {
+    const isPermitted = res.locals.user.access.indexOf('add') !== -1
+    if(isPermitted) return next()
+    next(new Error("you are not permitted to add"))
 }
 
-exports.isPermittedToEdit = async () => {
-    if(res.locals.user.access.indexOf('edit') === -1) next(new Error("you are not permitted to edit"))
-    next()
+exports.isPermittedToEdit = async (req, res, next) => {
+    const isPermitted = res.locals.user.access.indexOf('edit') !== -1
+    if(isPermitted) return next()
+    next(new Error("you are not permitted to edit"))
 }
 
-exports.isPermittedToDelete= async () => {
-    if(res.locals.user.access.indexOf('delete') === -1) next(new Error("you are not permitted to delete"))
-    next()
+exports.isPermittedToDelete= async (req, res, next) => {
+    const isPermitted = res.locals.user.access.indexOf('delete') !== -1
+    if(isPermitted) return next()
+    next(new Error("you are not permitted to delete"))
 }

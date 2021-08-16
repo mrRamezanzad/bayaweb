@@ -3,7 +3,7 @@ const userModel = require('../models/user')
 exports.create = async (userInfo) => {
     return new Promise(async (resolve, reject) => {
         const user = userModel.create(userInfo).then((doc) => {
-            resolve(`i have registered your user in database ${doc}`)
+            resolve(doc)
             
         }).catch(reject)
     })
