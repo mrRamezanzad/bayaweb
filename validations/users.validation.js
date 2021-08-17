@@ -1,32 +1,11 @@
-// const {body, check, header, validationResult} = require('express-validator')
-const {checkSchema} = require('express-validator')
+const {checkSchema, body} = require('express-validator')
 
 const {handleValidationErrors} = require('../utils/validation.util')
 const {parseArray} = require('../utils/general.util')
 
-// ========================== using chanining to validate 
-// exports.create = [
-//   body('username')
-//     .isString().withMessage("username must be string").notEmpty().withMessage("username must be entered").isLength({min: 5}),
-  
-//   body('password')
-//     .trim().notEmpty().isStrongPassword({minLength: 5}).withMessage("you should choose a stronger password"),
-  
-//   body('email').normalizeEmail().isEmail().withMessage("this is an invalid email address"),
-  
-//   body('mobile').isMobilePhone('fa-IR', {strict: true}),
+const usersValidation = {}
 
-//   body('access').custom((value, {req}) => {
-
-//     req.body['access'] = JSON.parse(req.body['access'])
-//     return true
-
-//   }), 
-
-// handleValidationErrors]
-
-const usersValidation = [
-
+usersValidation.create = [
   checkSchema({
  
     username: {
@@ -78,4 +57,33 @@ const usersValidation = [
 
   handleValidationErrors]
 
-module.exports = {usersValidation}
+// ========================== using chanining to validate update inputs 
+usersValidation.update = [
+  body('username').optional()
+    .isString().withMessage("username must be string").notEmpty().withMessage("username must be entered").isLength({min: 5}),
+  
+  body('password').optional()
+    .trim().notEmpty().isStrongPassword({minLength: 5}).withMessage("you should choose a stronger password"),
+  
+  body('email').optional().normalizeEmail().isEmail().withMessage("this is an invalid email address"),
+  
+  body('mobile').optional().isMobilePhone('fa-IR', {strict: true}),
+
+  body('access').optional().custom(async (value, {req}) => {
+
+    let allowedAccessControls = ['add', 'delete', 'edit']
+    let enteredAccessControl = await parseArray(value)
+    
+    let isAccessValid = enteredAccessControl.every(
+      access => allowedAccessControls.indexOf(access) !== -1
+    )
+      
+    if(isAccessValid) return true
+    throw new Error('your entered access control is invalid')
+
+  }), 
+
+handleValidationErrors]
+
+
+  module.exports = usersValidation
