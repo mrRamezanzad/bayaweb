@@ -7,7 +7,9 @@ exports.findAll = async () => await userModel.find()
 
 exports.findOne = async (match) => await userModel.findOne(match)
 
-exports.update = async (userId, updateUserInfo) => 
-    Boolean(await userModel.updateOne({_id: userId}, updateUserInfo, {new: true}).ok)
+exports.update = async (userId, updateUserInfo) => {
+    let result = await userModel.updateOne({_id: userId}, {$set: updateUserInfo}, {new: true})
+    return Boolean(result)
+}
 
-exports.delete = async (userId) => Boolean(await userModel.deleteOne({_id: userId}).ok)
+exports.delete = async (userId) => Boolean((await userModel.deleteOne({_id: userId})).ok)

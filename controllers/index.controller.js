@@ -18,7 +18,7 @@ router
     const loginResult = await login(username, password)
     res.send(loginResult)
     
-  } catch(err) {res.status(500).send(err)}
+  } catch(err) {res.status(500).send(err.message)}
 })
 
 module.exports = router;

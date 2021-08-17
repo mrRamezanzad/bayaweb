@@ -4,7 +4,6 @@ const {checkSchema} = require('express-validator')
 const {handleValidationErrors} = require('../utils/validation.util')
 const {parseArray} = require('../utils/general.util')
 
-
 // ========================== using chanining to validate 
 // exports.create = [
 //   body('username')
@@ -26,7 +25,8 @@ const {parseArray} = require('../utils/general.util')
 
 // handleValidationErrors]
 
-exports.create = [
+const usersValidation = [
+
   checkSchema({
  
     username: {
@@ -75,4 +75,7 @@ exports.create = [
       }
     },
   }),
+
   handleValidationErrors]
+
+module.exports = {usersValidation}

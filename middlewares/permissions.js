@@ -1,18 +1,22 @@
-const jwt = require('jsonwebtoken')
+const {promisify} = require('util')
+
+const {verify} = require('jsonwebtoken')
+
 const {findOne} = require('../services/users.service')
 const JWT_SECRET = 'SECRET'
 
 exports.isLoggedIn = async (req, res, next) => {
+
     if(!req.header("Authorization")) return next(new Error('you should provide credentials'))
     const token = req.header("Authorization").replace("Bearer ", "")
-    let decodedToken  
-    jwt.verify(token, JWT_SECRET, async (err, decoded) => {
-        if(err) throw new Error("we're suffering difficulties validating your token")
-        decodedToken = decoded
-
-        const userId = decodedToken.id
+        
+    verify(token, JWT_SECRET, async (err, decoded) => {
+        if(err) return next(new Error(err.message))
+        
+        const userId = decoded.id
         const user = await findOne({_id: userId, token})
-        if(!user) throw new Error('credentials required')
+
+        if(!user) return next(new Error('credentials required'))
         res.locals.user = user
         next()
     })

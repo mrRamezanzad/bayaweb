@@ -4,12 +4,13 @@
 const {connect} = require('mongoose')
 const {create, findOne} = require('../services/users.service')
 
-const DB_ADDRESS = process.env.DB_ADDRESS || 'mongodb+srv://keystar:X3Z4hCYqkzEMzr@cluster0.xfczv.mongodb.net/bayaweb?retryWrites=true&w=majority'
+const DB_ADDRESS = process.env.DB_ADDRESS || 'mongodb://localhost:27017/bayaweb'
 const dbConnection = connect(DB_ADDRESS,
                 {
                     useNewUrlParser: true,
                     useUnifiedTopology: true,
                     useCreateIndex: true,
+                    useFindAndModify: false,
                 })
     .then(console.log('[+] successfully connected to DB'))
     .catch((err) => console.log('[+] DB connection failed!!!', `\n ${err}`)

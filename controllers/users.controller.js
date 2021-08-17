@@ -4,12 +4,12 @@ const router = express.Router();
 const usersService = require('../services/users.service')
 
 const {isLoggedIn, isPermittedToAdd, isPermittedToEdit, isPermittedToDelete} = require('../middlewares/permissions')
-const usersValidation = require('../validations/users.validation.js')
+const {usersValidation}= require('../validations/users.validation.js')
 const {parseArray} = require('../utils/general.util')
 
 router
 
-.post('/', isLoggedIn, isPermittedToAdd, usersValidation.create, async (req, res, next) => {
+.post('/', isLoggedIn, isPermittedToAdd, usersValidation, async (req, res, next) => {
   
   const userInfo = {
     username: req.body.username,
@@ -46,16 +46,22 @@ router
   } catch (err) {res.status(500).send(err)}
 })
 
-.patch('/:id', isPermittedToEdit, async (req, res, next) => {
+.patch('/:id', isPermittedToEdit, usersValidation, async (req, res, next) => {
   
   let userId = req.params.id
-  let updateUserInfo = req.body
-  if(updateUserInfo['access']) updateUserInfo.access = JSON.parse(updateUserInfo.access)
+  let updateUserInfo = {
+    ... req.body['username'] && {username: req.body.username},
+    ... req.body['password'] && {password: req.body.password},
+    ... req.body['mobile']   && {mobile: req.body.mobile},
+    ... req.body['access']   && {access: req.body.access},
+    ... req.body['email']    && {email: req.body.email},
+  }
+
   try {
     updatedUser = await usersService.update(userId, updateUserInfo)
     res.send({updated: updatedUser})
     
-  } catch (err) {res.status(500).send(err)}
+  } catch (err) {res.status(500).send(err.message)}
 })
 
 .delete('/:id', isPermittedToDelete, async (req, res, next) => {
