@@ -16,7 +16,7 @@ router
     password: req.body.password,
     email: req.body.email,
     mobile: req.body.mobile,
-    ...(req.body['access']) && {access: parseArray(req.body.access)}
+    ...(req.body['access']) && {access: await parseArray(req.body.access)}
   }
   try {
     const newUser = await usersService.create(userInfo)
@@ -56,7 +56,6 @@ router
     res.send({updated: updatedUser})
     
   } catch (err) {res.status(500).send(err)}
-
 })
 
 .delete('/:id', isPermittedToDelete, async (req, res, next) => {

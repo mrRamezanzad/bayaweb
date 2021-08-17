@@ -1,6 +1,6 @@
 const {Schema, model}  = require('mongoose')
 
-const userSchema = new Schema({
+let userSchema = new Schema({
         username: {
           type: String,
           required: true,
@@ -13,11 +13,9 @@ const userSchema = new Schema({
         password: {
           type: String,
           required: true,
-          trim: true,
-          minLength: 5,
-          maxLength: 25
           
         },
+        
         email: {
           type: String,
           trim: true,
@@ -54,7 +52,10 @@ const userSchema = new Schema({
           type: String,
           default: ""
         },
-        
 })
 
-module.exports = model('User', userSchema)
+// importing hooks
+userSchema = require('./hooks/user.hook')(userSchema)
+
+const userModel = model('User', userSchema)
+module.exports = userModel

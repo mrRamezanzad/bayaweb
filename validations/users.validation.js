@@ -61,9 +61,9 @@ exports.create = [
 
     access: {
       custom: {
-        options: (value, {req}) => {
+        options: async (value, {req}) => {
           let allowedAccessControls = ['add', 'delete', 'edit']
-          let enteredAccessControl = parseArray(value)
+          let enteredAccessControl = await parseArray(value)
           
           let isAccessValid = enteredAccessControl.every(
             access => allowedAccessControls.indexOf(access) !== -1
