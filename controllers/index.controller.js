@@ -20,7 +20,7 @@ router
     const loginResult = await logUserIn(username, password)
     res.send(loginResult)
     
-  } catch(err) {res.status(500).send(err.message)}
+  } catch(err) {next(err)}
 })
 
 .post('/auth/logout', isLoggedIn, async (req, res, next) => {
@@ -31,7 +31,7 @@ router
     const isLoggedOut = await logUserOut(user)
     if(isLoggedOut) res.send('logged out succesfully')
 
-  }catch(err) {res.status(500).send(err.message)}
+  }catch(err) {next(err)}
 })
 
 module.exports = router;

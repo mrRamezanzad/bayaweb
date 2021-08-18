@@ -23,7 +23,7 @@ router
     const newUser = await usersService.create(userInfo)
     res.status(201).send(newUser)
 
-  } catch (err) {res.status(500).send(err)}
+  } catch (err) {next(err)}
 })
 
 .get('/', async (req, res, next) => {
@@ -33,7 +33,7 @@ router
     users = await usersService.findAll()
     res.send(users)
 
-  } catch (err) {res.status(500).send(users)}
+  } catch (err) {next(err)}
 })
 
 .get('/:id', async (req, res, next) => {
@@ -44,7 +44,7 @@ router
     user = await usersService.findOne({_id: userId})
     res.send(user)
 
-  } catch (err) {res.status(500).send(err)}
+  } catch (err) {next(err)}
 })
 
 .patch('/:id', isPermittedToEdit, usersValidation.update, async (req, res, next) => {
@@ -63,7 +63,7 @@ router
     updatedUser = await usersService.update(userId, updateUserInfo)
     res.send({updated: updatedUser})
     
-  } catch (err) {res.status(500).send(err.message)}
+  } catch (err) {next(err)}
 })
 
 .delete('/:id', isPermittedToDelete, async (req, res, next) => {
@@ -74,7 +74,7 @@ router
     isUserDeleted = await usersService.delete(userId)
     res.send({deleted: isUserDeleted})
     
-  } catch (err){res.status(500).send(err)}
+  } catch (err) {next(err)}
 })
 
 module.exports = router;

@@ -5,6 +5,7 @@ const {findOne, update} = require('./users.service')
 const setToken = require('../utils/auth.util')
 
 const {JWT_SECRET} = require('../configs')
+const { badRequest } = require('../errors/ApiError')
 
 async function verifyPassword(enteredPassword, hashedPassword) {
     const passwordCompareResult = await compare(enteredPassword, hashedPassword)
@@ -13,18 +14,18 @@ async function verifyPassword(enteredPassword, hashedPassword) {
 
 exports.logUserIn = async (username, password) => {
     const user = await findOne({username})
-    if(!user) throw new Error('check your credentials')
+    if(!user) throw badRequest('user not found')
 
     const isPasswordValid = await verifyPassword(password, user.password)
-    if(!isPasswordValid) throw new Error('check your credentials')
+    if(!isPasswordValid) throw badRequest('invalid password')
 
     let isTokenValid = false
     try {
-        if (!user['token'].trim()) throw new Error('empty token field')
+        if (!user['token'].trim()) throw badRequest('invalid token')
         isTokenValid = Boolean(await verify(user.token, JWT_SECRET))
 
     } catch (err) {isTokenValid = false}
-    if (isTokenValid) throw new Error("you are already logged in")
+    if (isTokenValid) throw badRequest('you should logout first')
 
     user.token = await setToken(user.id)
     user.save()

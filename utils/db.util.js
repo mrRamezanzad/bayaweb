@@ -32,7 +32,6 @@ connection.on('error', err => {
 //     process.exit(1)}
 // )
 
-
 // ===========================================================================================================
 //  if there is no admin in database, this part will create it for us and logs it's data in terminal, for now
 // ===========================================================================================================

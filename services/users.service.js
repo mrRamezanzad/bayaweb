@@ -1,15 +1,28 @@
-const mongoose = require('mongoose')
 const userModel = require('../models/user.model')
+const { badRequest } = require('../errors/ValidationError')
 
-exports.create = async (userInfo) => await userModel.create(userInfo)
+exports.create = async (userInfo) => { 
+    try{
+        return await userModel.create(userInfo)
 
-exports.findAll = async () => await userModel.find()
+    } catch(err) {
+        throw badRequest(err)
+    }
+}
 
-exports.findOne = async (match) => await userModel.findOne(match)
+exports.findAll = async () => { 
+    return await userModel.find()
+}
 
-exports.update = async (userId, updateUserInfo) => {
+exports.findOne = async (match) => { 
+    return await userModel.findOne(match)
+}
+
+exports.update = async (userId, updateUserInfo) => { 
     let result = await userModel.updateOne({_id: userId}, {$set: updateUserInfo}, {new: true})
     return Boolean(result)
 }
 
-exports.delete = async (userId) => Boolean((await userModel.deleteOne({_id: userId})).ok)
+exports.delete = async (userId) => {
+    return  Boolean((await userModel.deleteOne({_id: userId})).ok)
+}
