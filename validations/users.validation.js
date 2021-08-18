@@ -3,6 +3,7 @@ const {checkSchema, body} = require('express-validator')
 const {handleValidationErrors} = require('../utils/validation.util')
 const {parseArray} = require('../utils/general.util')
 
+/** validation and sanitization pipeline of input values coming from client-side */
 const usersValidation = {}
 
 usersValidation.create = [

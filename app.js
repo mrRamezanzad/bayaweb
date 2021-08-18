@@ -7,8 +7,10 @@ const app = express();
 const logger = require('morgan');
 const validator = require('express-validator')
 
-const {dbConnection} = require('./utils/db.util')
-const { isLoggedIn } = require('./middlewares/permissions');
+/** seting up database and it's normal initializing processes */
+require('./utils/db.util')
+
+// setting up central routing of controllers 
 const routes = require('./routes/api');
 
 // view engine setup

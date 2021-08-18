@@ -1,9 +1,19 @@
+/**
+ *  this file controlls all permissions that a use needs to grant for doing several defined
+    operations in our services
+ *  - isLoggedIn fn(): next() | next(err: <Error>)
+ *  - isPermittedToAdd fn(): next() | next(err: <Error>)
+ *  - isPermittedToEdit fn(): next() | next(err: <Error>)
+ *  - isPermittedToDelete fn(): next() | next(err: <Error>)
+ */
+
 const {promisify} = require('util')
 
 const {verify} = require('jsonwebtoken')
 
 const {findOne} = require('../services/users.service')
-const JWT_SECRET = 'SECRET'
+
+const {JWT_SECRET } = require('../configs')
 
 exports.isLoggedIn = async (req, res, next) => {
 

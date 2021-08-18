@@ -11,6 +11,7 @@ router
 
 .post('/', isLoggedIn, isPermittedToAdd, usersValidation.create, async (req, res, next) => {
   
+/** check for input field passage and sanitizing access array fields */
   const userInfo = {
     username: req.body.username,
     password: req.body.password,
@@ -48,6 +49,7 @@ router
 
 .patch('/:id', isPermittedToEdit, usersValidation.update, async (req, res, next) => {
   
+/** check for input field passage and sanitizing access array fields */
   let userId = req.params.id
   let updateUserInfo = {
     ... req.body['username'] && {username: req.body.username},

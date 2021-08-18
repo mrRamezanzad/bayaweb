@@ -1,10 +1,12 @@
 // ========================================-=========================================================
-//          this file is for modulizing db connection and initializing adming for our project
+//          this file is for modulizing db connection and listening for db's important events 
+//                   furthermore: initializing adming for our projects first build
 
-const {connect} = require('mongoose')
+const {connect, connection} = require('mongoose')
 const {create, findOne} = require('../services/users.service')
 
-const DB_ADDRESS = process.env.DB_ADDRESS || 'mongodb://localhost:27017/bayaweb'
+const {DB_ADDRESS} = require('../configs')
+
 const dbConnection = connect(DB_ADDRESS,
                 {
                     useNewUrlParser: true,
@@ -16,6 +18,25 @@ const dbConnection = connect(DB_ADDRESS,
     .catch((err) => console.log('[+] DB connection failed!!!', `\n ${err}`)
 )
 
+connection.on('error', err => {
+    console.log('================================================================================')
+    console.log('   there was a problem during database connection I have to shut down server')
+    console.log('================================================================================\n ',err)
+    process.exit(1)}
+)
+    
+// connection.on('reconnectTries', err => {
+//     console.log('================================================================================')
+//     console.log('   there was a problem during database connection I have to shut down server')
+//     console.log('================================================================================\n ',err)
+//     process.exit(1)}
+// )
+
+
+// ===========================================================================================================
+//  if there is no admin in database, this part will create it for us and logs it's data in terminal, for now
+// ===========================================================================================================
+                    //   TODO:  send newly created admin details to it's email address
 
 async function checkAdminExistance() {
     try{

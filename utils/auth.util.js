@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const JWT_SECRET = process.env.JWT_SECRET || 'SECRET'
+const {JWT_SECRET} = require('../configs')
 
 async function setToken(userId) {
    //FIXME: REPLACE LINES BELOW IN CASE OF PRODUCTION TO HAVE A SECURE LOGIN 

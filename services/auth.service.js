@@ -1,17 +1,17 @@
 const {compare} = require('bcrypt')
 const {verify} = require('jsonwebtoken')
 
-const {findOne} = require('./users.service')
+const {findOne, update} = require('./users.service')
 const setToken = require('../utils/auth.util')
 
-const JWT_SECRET = process.env.JWT_SECRET || 'SECRET'
+const {JWT_SECRET} = require('../configs')
 
 async function verifyPassword(enteredPassword, hashedPassword) {
     const passwordCompareResult = await compare(enteredPassword, hashedPassword)
     return passwordCompareResult
 }
 
-exports.login = async (username, password) => {
+exports.logUserIn = async (username, password) => {
     const user = await findOne({username})
     if(!user) throw new Error('check your credentials')
 
@@ -26,8 +26,9 @@ exports.login = async (username, password) => {
     } catch (err) {isTokenValid = false}
     if (isTokenValid) throw new Error("you are already logged in")
 
-
     user.token = await setToken(user.id)
     user.save()
     return {success: true, token: user.token}
 }
+
+exports.logUserOut = async user => await update(user.id, {token: ""})

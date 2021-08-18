@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const {login} = require("../services/auth.service");
+const {logUserIn, logUserOut} = require("../services/auth.service");
+const {update} = require("../services/users.service");
+const {isLoggedIn} = require("../middlewares/permissions");
 
 /* GET home page. */
 router
@@ -15,10 +17,21 @@ router
  
   try{
     const {username, password} = req.body
-    const loginResult = await login(username, password)
+    const loginResult = await logUserIn(username, password)
     res.send(loginResult)
     
   } catch(err) {res.status(500).send(err.message)}
+})
+
+.post('/auth/logout', isLoggedIn, async (req, res, next) => {
+/**  logging out with help of res.user which is saved by isLoggedIn middleware check */
+  try{
+
+    const user = res.locals.user
+    const isLoggedOut = await logUserOut(user)
+    if(isLoggedOut) res.send('logged out succesfully')
+
+  }catch(err) {res.status(500).send(err.message)}
 })
 
 module.exports = router;
