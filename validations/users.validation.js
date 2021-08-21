@@ -43,7 +43,7 @@ usersValidation.create = [
       custom: {
         options: async (value, {req}) => {
           let allowedAccessControls = ['add', 'delete', 'edit']
-          let enteredAccessControl = await parseArray(value)
+          let enteredAccessControl = value
           
           let isAccessValid = enteredAccessControl.every(
             access => allowedAccessControls.indexOf(access) !== -1
@@ -73,7 +73,7 @@ usersValidation.update = [
   body('access').optional().custom(async (value, {req}) => {
 
     let allowedAccessControls = ['add', 'delete', 'edit']
-    let enteredAccessControl = await parseArray(value)
+    let enteredAccessControl = value
     
     let isAccessValid = enteredAccessControl.every(
       access => allowedAccessControls.indexOf(access) !== -1

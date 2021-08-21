@@ -1,0 +1,59 @@
+<div id="new-user" class="column box is-three-fifths is-offset-one-fifth" style='display: none'>
+  <form action="/users" method="POST" >
+
+    <div class="field">
+      <div class="control">
+        <input type="text" name="username" placeholder="username" class="input control">
+      </div>
+    </div>
+<!-- end username field -->
+
+    <div class="field">
+      <div class="control">
+        <input type="text" name="password" placeholder="password" class="input control">
+      </div>
+    </div>
+<!-- end password field --> 
+
+    <div class="field">
+      <div class="control">
+        <input type="text" name="email" placeholder="email" class="input control">
+      </div>
+    </div>
+<!-- end email field -->
+
+    <div class="field">
+      <div class="control">
+        <input type="text" name="mobile" placeholder="mobile" class="input control">
+      </div>
+    </div>
+<!-- end mobile field --> 
+
+    <div class="field">
+      <p> select what permissions this user will have: </p>
+        <div class="control">
+          <lable class="checkbox mx-2">
+            <input type="checkbox" name="access" value="add">
+            add
+          </lable>
+          <lable class="checkbox mx-2">
+            <input type="checkbox" name="access" value="edit">
+            edit
+          </lable>
+          <lable class="checkbox mx-2">
+            <input type="checkbox" name="access" value="delete">
+            delete
+          </lable>
+      </div>
+    </div>
+<!-- end access field -->
+
+    <div class="field">
+      <div class="control">
+        <a id="save-new-user" class="card-footer-item button is-success ">Save</a>
+      </div>
+    </div>
+<!-- end save button -->
+     
+  </form>
+</div>

@@ -3,6 +3,7 @@ const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 
 const express = require('express');
+const session = require('express-session')
 const app = express();
 const logger = require('morgan');
 
@@ -23,6 +24,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+  name: 'sid',
+  secret: 'keyboard cat',
+  saveUninitialized: true,
+  resave: false,
+  cookie: { maxAge: 360000}
+  
+}))
 
 app.use(routes);
 

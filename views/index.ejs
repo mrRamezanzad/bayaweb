@@ -1,11 +1,24 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+<%- include('partials/__header--start') %> 
+<title>
+   users showcase 
+</title>
+<%- include('partials/__styles') %> 
+<%- include('partials/__header--end') %> 
+<%- include('partials/__navbar.ejs', {loggedIn: true}) %> 
+<%- include('partials/__scripts') %>
+
+<main class="container">
+  
+  <div class="level"><button class="button mx-auto is-primary add-user">+</button></div>
+  <div id="user-cards" class="columns is-multiline">
+
+    <%- include('partials/__card--new') %> 
+    <%- include('partials/__card', {users}) %> 
+  </div>
+<!-- end #user-cards -->
+
+<%- include('partials/__modal') %> 
+</main>
+
+<script src="/javascripts/index.js"></script>
+<%- include('partials/__footer') %>

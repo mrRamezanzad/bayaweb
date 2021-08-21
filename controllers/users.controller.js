@@ -17,7 +17,7 @@ router
     password: req.body.password,
     email: req.body.email,
     mobile: req.body.mobile,
-    ...(req.body['access']) && {access: await parseArray(req.body.access)}
+    ...(req.body['access']) && {access:req.body.access}
   }
   try {
     const newUser = await usersService.create(userInfo)
@@ -55,7 +55,7 @@ router
     ... req.body['username'] && {username: req.body.username},
     ... req.body['password'] && {password: req.body.password},
     ... req.body['mobile']   && {mobile: req.body.mobile},
-    ... req.body['access']   && {access: await parseArray(req.body.access)},
+    ... req.body['access']   && {access: req.body.access},
     ... req.body['email']    && {email: req.body.email},
   }
 

@@ -15,18 +15,42 @@ const {findOne} = require('../services/users.service')
 const {JWT_SECRET } = require('../configs')
 
 exports.isLoggedIn = async (req, res, next) => {
-    if(!req.header("Authorization")) return  next(badRequest('you should provide proper credentials'))
-    const token = req.header("Authorization").replace("Bearer ", "")
-        
+    if(!req['session']['token']) return  res.redirect('/login')
+    
+    const token = req['session']['token']
     verify(token, JWT_SECRET, async (err, decoded) => {
-        if(err) return next(badRequest('you should provide proper credentials'))
+        if(err){ 
+            req['session']['token'] = ''
+            return res.redirect('/login')
+    }
         
         const userId = decoded['id']
         const user = await findOne({_id: userId, token})
 
-        if(!user) return next(badRequest('you should provide proper credentials'))
+        if(!user) {
+            req['session']['token'] = ''
+            return res.redirect('/login')
+        }
         res.locals.user = user
         next()
+    })
+}
+
+exports.notLoggedIn = async (req, res, next) => {
+    if(!req['session']['token']) {
+        return next()
+    }
+    
+    const token = req['session']['token']
+    verify(token, JWT_SECRET, async (err, decoded) => {
+        if(err) return next()
+        
+        const userId = decoded['id']
+        const user = await findOne({_id: userId, token})
+
+        if(!user) return next()
+        res.locals.user = user
+        res.redirect('/')
     })
 }
 

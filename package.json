@@ -4,7 +4,8 @@
   "author": "mrRamezanzad",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "css": "sass --watch public/src/:public/stylesheets"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -13,15 +14,19 @@
     "dotenv": "^10.0.0",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "express-session": "^1.17.2",
     "express-validator": "^6.12.1",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.7",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "node-scss": "^7.0.3"
   },
   "description": "> note: to replace database query in `app.js`",
   "main": "app.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "bulma": "^0.9.3"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mrRamezanzad/bayaweb.git"

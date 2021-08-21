@@ -1,1 +1,1 @@
-exports.parseArray = async (stringifiedArray) => JSON.parse(stringifiedArray.replace(/'/g, "\""))
+exports.parseArray = async (stringifiedArray) => JSON.parse(stringifiedArray.replace(/\'/g, "\""))

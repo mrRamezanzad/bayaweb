@@ -1,0 +1,22 @@
+
+<% users.forEach(user => { %>
+  <div class="column is-three-fifths is-offset-one-fifth">
+    <div class="card my-2 mx-auto is-5">
+      <div class="card-content">
+        <div class="content">
+          <div class="is-flex is-flex-wrap-wrap is-justify-content-space-between">
+            <p class="column">username: <span class="has-text-grey"><%= user.username %> </span</p> 
+            <p class="column">email: <span class="has-text-grey"><%= user.email %> </span</p> 
+            <p class="column">mobile: <span class="has-text-grey"><%= user.mobile %> </span</p> 
+            <p class="column">access: <span class="has-text-grey"><%= user.access %> </span</p> 
+          </div>
+        </div>
+      </div>
+      <footer class="card-footer">
+        <a data-user-id=<%= user['id'] %> class="card-footer-item button edit-user">Edit</a>
+        <a data-user-id=<%= user['id'] %> class="card-footer-item button delete-user">Delete</a>
+      </footer>
+    </div>
+    <!-- end card -->
+  </div>
+<%}) %>

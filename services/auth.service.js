@@ -25,7 +25,8 @@ exports.logUserIn = async (username, password) => {
         isTokenValid = Boolean(await verify(user.token, JWT_SECRET))
 
     } catch (err) {isTokenValid = false}
-    if (isTokenValid) throw badRequest('you should logout first')
+
+    if (isTokenValid) user['token'] = ''
 
     user.token = await setToken(user.id)
     user.save()
